@@ -21,4 +21,31 @@ const classs = await Class.create({
   res.status(500).json({ message: 'Something went wrong', error });
 }
 };
-   
+
+
+
+export const getAllClass = async (req, res) => {
+  try {
+    const classs = await Class.findAll();
+    res.status(200).json(classs);
+  } catch (error) {
+    res.status(500).json({ message: 'Something went wrong', error });
+  }
+};
+
+
+export const getClassById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const classs = await Class.findByPk(id);
+    if (!classs) {
+      return res.status(404).json({ message: 'Teacher not found' });
+    }
+
+    res.status(200).json(classs);
+  } catch (error) {
+    res.status(500).json({ message: 'Something went wrong', error });
+  }
+};
+

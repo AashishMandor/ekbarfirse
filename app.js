@@ -5,6 +5,7 @@ import express from 'express';
 import adminRoutes from './routes/adminRoutes.js';
 import attendanceRoutes from './routes/attendanceRoutes.js';
 import classRoutes from './routes/ClassRoutes.js';
+import complainRoutes from './routes/complainRoutes.js';
 import noticeRoutes from './routes/NoticeRoutes.js';
 import studentRoutes from './routes/studentRoutes.js';
 import subjectRoutes from './routes/subjectRoutes.js';
@@ -26,6 +27,7 @@ app.use('/api/student', studentRoutes);
 app.use('/api/class', classRoutes);
 app.use('/api/subject', subjectRoutes);
 app.use('/api/notice', noticeRoutes);
+app.use('/api/complain',complainRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
