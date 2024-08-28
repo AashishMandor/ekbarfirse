@@ -17,8 +17,6 @@ content : {
 date:{
 type: DataTypes.STRING,
 allowNull: false,
-// date.toLocaleDateString('en-GB');
-// console.log(date); // Output: 28/08/2024
 
 
 }
