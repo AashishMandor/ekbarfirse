@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
 
 // Initialize Sequelize with MySQL connection details
-const sequelize = new Sequelize('newone', 'root', 'aashish@123', {
+const sequelize = new Sequelize('newtwo', 'root', 'aashish@123', {
   host: 'localhost',
   dialect: 'mysql',
   logging: false,  // Set to true if you want to see SQL queries in the console

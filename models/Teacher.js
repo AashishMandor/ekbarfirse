@@ -50,6 +50,7 @@ sequelize.sync({ alter: true })
   })
   .catch((error) => {
     console.error('Error creating or updating Teacher model:', error);
+    console.log(error);
 });
 
 export default Teacher;

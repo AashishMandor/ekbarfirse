@@ -15,11 +15,7 @@ const Class = sequelize.define("Class", {
     type: DataTypes.STRING,
     allowNull: true,
   },
-});
-
-
-
-
+}, );
 
 // Sync model with database
 sequelize.sync({ alter: true })
@@ -28,6 +24,7 @@ sequelize.sync({ alter: true })
   })
   .catch(err => {
     console.error("Error creating or updating Class model", err);
+    console.log(err);
 });
 
 export default Class;

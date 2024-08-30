@@ -1,142 +1,51 @@
-// import { DataTypes } from 'sequelize';
-// import sequelize from '../config/database.js';
-// import Class from './Class.js';
-// import Sattendance from './Sattendance.js';
-
-
-
-
-
-
-// const Student = sequelize.define('Student', {
-//   id: {
-//     type: DataTypes.INTEGER,
-//     // primaryKey: true,
-//     autoIncrement: true,
-//   },
-//   name: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-//   },
-//   email: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-//     unique: true,
-//     validate: {
-//       isEmail: true,
-//     },
-//   },
-//   password: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-//     validate: {
-//       len: [8, 255],  // Password should be between 8 and 255 characters
-//     },
-//   },
-//   age: {
-//     type: DataTypes.INTEGER,
-//     allowNull: false,
-//     validate: {
-//       min: 1,  // Age should be a positive number
-//     },
-//   },
-//   address: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-//   },
-  
-//   className: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-//   },
-//   rollNumber:{
-//     type: DataTypes.INTEGER,
-//     allowNull: false,
-//     primaryKey: true,
-//     unique: true,
-//     validate: {
-//       min: 1,  // Roll number should be a positive integer
-//     },
-//   }
-  
-// },
-//  {
-//   timestamps: true,  // Automatically adds createdAt and updatedAt fields
-// });
-
-// sequelize.sync({ alter: true })
-//   .then(() => {
-//     console.log('Student table created or updated.');
-//   })
-//   .catch((error) => {
-//     console.error('Error creating or updating Teacher table:', error);
-//   });
-
-// //   Student.hasMany(Sattendance, { foreignKey: 'studentId' });
-// // Sattendance.belongsTo(Student, { foreignKey: 'studentId' });
-
-// Student.hasMany(Sattendance, { foreignKey: 'studentRollNumber' });
-// Sattendance.belongsTo(Student, { foreignKey: 'studentRollNumber' });
-
-// Student.belongsTo(Class);
-// Class.hasMany(Student);
-
-
-// export default Student;
-
-
-
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
-
+import Class from './Class.js';
 
 const Student = sequelize.define('Student', {
   rollNumber: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    allowNull: false,
-    unique: true,
-    validate: {
-      min: 1, // Roll number should be a positive integer
-    },
+    autoIncrement: true
   },
   StudentName: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: false
   },
   email: {
     type: DataTypes.STRING,
-    allowNull: false,
     unique: true,
-    validate: {
-      isEmail: true,
-    },
+    allowNull: false
   },
   password: {
     type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      len: [8, 255],  // Password should be between 8 and 255 characters
-    },
+    allowNull: false
   },
   age: {
     type: DataTypes.INTEGER,
-    allowNull: false,
-    validate: {
-      min: 1, // Age should be a positive number
-    },
+    allowNull: false
   },
   address: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: false
   },
-  class: {
+  className: { // Changed from 'class' to 'className' to avoid reserved keyword issues
     type: DataTypes.STRING,
-    allowNull: false,
-  },
+    references: {
+      model: 'Classes',
+      key: 'name'
+    }
+  }
 }, {
   timestamps: true,  // Automatically adds createdAt and updatedAt fields
 });
+
+// Associations
+Student.belongsTo(Class, { foreignKey: 'class', targetKey: 'name' });
+Class.hasMany(Student, { foreignKey: 'class', sourceKey: 'name' });
+
+// Student.hasMany(Sattendance, { foreignKey: 'studentRollNumber', sourceKey: 'rollNumber' });
+// Sattendance.belongsTo(Student, { foreignKey: 'studentRollNumber', targetKey: 'rollNumber' });
 
 sequelize.sync({ alter: true })
   .then(() => {
@@ -144,16 +53,6 @@ sequelize.sync({ alter: true })
   })
   .catch((error) => {
     console.error('Error creating or updating Student table:', error);
-    console.log(error);
   });
-
-
-
-// Student.hasMany(Sattendance, { foreignKey: 'studentRollNumber' });
-// Sattendance.belongsTo(Student, { foreignKey: 'studentRollNumber' });
-
-// Student.belongsTo(Class);
-// Class.hasMany(Student);
-
 
 export default Student;

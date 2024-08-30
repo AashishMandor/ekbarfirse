@@ -16,11 +16,11 @@ const Sattendance = sequelize.define('Sattendance', {
     type: DataTypes.ENUM('Present', 'Absent'),
     allowNull: false,
   },
-  studentRollNumber: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    allowNull: false,
-  },
+  // studentRollNumber: {
+  //   type: DataTypes.INTEGER,
+  //   primaryKey: true,
+  //   allowNull: false,
+  // },
 });
 
 
