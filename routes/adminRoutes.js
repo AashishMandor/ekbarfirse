@@ -1,5 +1,5 @@
 import express from 'express';
-import { login, signup } from '../controllers/adminController.js'; // Ensure correct path and file extension
+import { getAdmin, login, signup } from '../controllers/adminController.js'; // Ensure correct path and file extension
 
 const router = express.Router();
 
@@ -8,5 +8,7 @@ router.post('/signup', signup);
 
 // Route for admin login
 router.post('/login', login);
+
+router.get('/profile/:id',getAdmin)
 
 export default router;

@@ -12,11 +12,11 @@ import sequelize from "../config/database.js";
     allowNull: false,
   },
   description: {
-    type: DataTypes.TEXT,
+    type: DataTypes.TEXT,   
     allowNull: false,
   },
   date: {
-    type: DataTypes.DATEONLY, 
+    type: DataTypes.STRING, 
     allowNull: true,
   }
 }, {

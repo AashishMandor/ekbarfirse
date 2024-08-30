@@ -5,45 +5,45 @@ import Student from "../models/Student.js";
 
 
 export const createstudents = async (req, res) => {
-    const { name, email, password, age, address, className } = req.body;
+  const { StudentName, email, password, age, address, rollNumber, class: className } = req.body;
 
-    try {
-        // Check if student already exists
-        const existingstudents = await Student.findOne({ where: { email } });
-        if (existingstudents) {
-            return res.status(400).json({ message: 'student already exists' });
-        }
+  try {
+      // Check if student already exists
+      const existingStudent = await Student.findOne({ where: { email } });
+      if (existingStudent) {
+          return res.status(400).json({ message: 'Student already exists' });
+      }
 
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10);
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create a new student
-        const student = await Student.create({
-            name,
-            email,
-            age,
-            address,
-            className,
-            password: hashedPassword,
+      // Create a new student
+      const student = await Student.create({
+          StudentName,
+          rollNumber,
+          email,
+          age,
+          address,
+          password: hashedPassword,
+          class: className,  // Using className to avoid conflict with reserved keyword
+      });
 
-        });
-
-        res.status(201).json({ message: 'student created successfully', student });
-    } catch (error) {
-        res.status(500).json({ message: 'Something went wrong', error });
-        console.log(error);
-    }
+      res.status(201).json({ message: 'Student created successfully', student });
+  } catch (error) {
+      res.status(500).json({ message: 'Something went wrong', error });
+      console.log(error);
+  }
 };
 
 
 // Update an existing student
 export const updatestudent = async (req, res) => {
-    const { id } = req.params;
-    const { name, email, password, className} = req.body;
+    const { rollNumber } = req.params;
+    const { name, email, password, class:className} = req.body;
   
     try {
       // Find student by ID
-      const student = await Student.findByPk(id);
+      const student = await Student.findByPk(rollNumber);
       if (!student) {
         return res.status(404).json({ message: 'student not found' });
       }
@@ -59,7 +59,7 @@ export const updatestudent = async (req, res) => {
         name: name || Student.name,
         email: email || Student.email,
         password: hashedPassword,
-        className: className || Student.className
+        class: className || Student.class
       });
   
       res.status(200).json({ message: 'student updated successfully', student });
@@ -70,10 +70,10 @@ export const updatestudent = async (req, res) => {
   
   // Get details of a single student
   export const getstudentById = async (req, res) => {
-    const { id } = req.params;
+    const { rollNumber } = req.params;
   
     try {
-      const student = await Student.findByPk(id);
+      const student = await Student.findByPk(rollNumber);
       if (!student) {
         return res.status(404).json({ message: 'student not found' });
       }
@@ -97,11 +97,11 @@ export const updatestudent = async (req, res) => {
   
   // Delete a student
   export const deletestudent = async (req, res) => {
-    const { id } = req.params;
+    const { rollNumber } = req.params;
   
     try {
       // Find student by ID
-      const student = await Student.findByPk(id);
+      const student = await Student.findByPk(rollNumber);
       if (!student) {
         return res.status(404).json({ message: 'student not found' });
       }
@@ -117,10 +117,12 @@ export const updatestudent = async (req, res) => {
   
   export const studentlogin = async (req, res) => {
     try {
-      const { email, password } = req.body;
+      const { rollNumber, password } = req.body;
   
       // Find the student by email
-      const student = await Student.findOne({ where: { email } });
+      const student = await Student.findOne({ where: { rollNumber
+
+       } });
       
       if (!student) {
         return res.status(400).json({ message: 'Student not found' });
@@ -134,7 +136,7 @@ export const updatestudent = async (req, res) => {
   
       // Generate a token (assuming you want to use JWT for authentication)
       const token = jwt.sign(
-        { id: student.id, email: student.email },
+        { name: student.name, email: student.email },
         'your_secret_key', // Replace with your actual secret key
         { expiresIn: '1h' } // Token expiration time
       );

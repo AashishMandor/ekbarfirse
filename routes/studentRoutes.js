@@ -22,7 +22,7 @@ router.put('/:id', updatestudent);
 //http://localhost:5000/api/student/1
 
 // Route to get student details by ID
-router.get('/detail/:id', getstudentById);
+router.get('/detail/:rollNumber', getstudentById);
 //http://localhost:5000/api/student/2
 
 // Route to get all students
@@ -31,7 +31,7 @@ router.get('/', getAllstudents);
 
 
 // Route to delete a student
-router.delete('/:id', deletestudent);
+router.delete('/:rollNumber', deletestudent);
 
 // route to login student
 router.post('/login',studentlogin);

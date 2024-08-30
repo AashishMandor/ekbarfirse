@@ -6,3 +6,9 @@ export const formatDate = (date) => {
 
     return `${day}-${month}-${year}`;
 };
+
+
+
+// const teachers = await axios.get(`http://localhost:5000/api/classes/${classID}/teachers`);
+// const subjects = await axios.get(`http://localhost:5000/api/classes/${classID}/subjects`);
+

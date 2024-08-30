@@ -2,21 +2,23 @@ import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
 
 const Sattendance = sequelize.define('Sattendance', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  },
+  // id: {
+  //   type: DataTypes.INTEGER,
+  //   autoIncrement: true,
+  //   primaryKey: true,
+  // },
   date: {
-    type: DataTypes.DATEONLY,
+    type: DataTypes.STRING,
     allowNull: false,
+    primaryKey: true,
   },
   status: {
     type: DataTypes.ENUM('Present', 'Absent'),
     allowNull: false,
   },
-  studentId: {
+  studentRollNumber: {
     type: DataTypes.INTEGER,
+    primaryKey: true,
     allowNull: false,
   },
 });

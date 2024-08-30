@@ -1,9 +1,8 @@
-import { DataTypes } from 'sequelize';
-import sequelize from '../config/database.js';
-import Subject from './Subject.js';
+import { DataTypes } from "sequelize";
+import sequelize from "../config/database.js";
+import Class from "./Class.js";
 
-
-const Teacher = sequelize.define('Teacher', {
+const Teacher = sequelize.define("Teacher", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -24,26 +23,33 @@ const Teacher = sequelize.define('Teacher', {
   password: {
     type: DataTypes.STRING,
     allowNull: false,
+    validate: {
+      len: [8, 255],
+    },
   },
   subject: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-}, {
-  timestamps: true,
+  classteacher: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: 'class not assigned',
+  },
 });
 
-// Sync model with database
+Class.hasMany(Teacher, { foreignKey: "classId" });
+Teacher.belongsTo(Class, { foreignKey: "classId" });
+
+
+
+
 sequelize.sync({ alter: true })
   .then(() => {
-    console.log('Teacher table created or updated.');
+    console.log('Teacher model created or updated.');
   })
   .catch((error) => {
-    console.error('Error creating or updating Teacher table:', error);
-  });
-
-  Teacher.belongsToMany(Subject, { through: 'TeacherSubjects' });
-  Subject.belongsToMany(Teacher, { through: 'TeacherSubjects' });
-  
+    console.error('Error creating or updating Teacher model:', error);
+});
 
 export default Teacher;

@@ -11,7 +11,7 @@ const router = express.Router();
 router.post('/mark', markAttendance);
 
 // Route to get attendance records of a specific teacher
-router.get('/teacher/:teacherId', getAttendanceByTeacher);
+router.get('/teacher/:teacherName', getAttendanceByTeacher);
 
 // Route to get all attendance records
 router.get('/', getAllAttendance);

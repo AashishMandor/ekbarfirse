@@ -1,19 +1,35 @@
+import { formatDate } from '../extra/dateFormat.js';
 import Attendance from '../models/Attendance.js';
 import Teacher from '../models/Teacher.js';
 
 // Mark attendance for a teacher
 export const markAttendance = async (req, res) => {
-  const { teacherId, status } = req.body;
+  const { teacherName, status } = req.body;
+  const formattedDate = formatDate(new Date());
 
   try {
-    const teacher = await Teacher.findByPk(teacherId);
+    
+    const teacher = await Teacher.findByPk(teacherName);
     if (!teacher) {
       return res.status(404).json({ message: 'Teacher not found' });
     }
 
+    
+    const existingAttendance = await Attendance.findOne({
+      where: {
+        teacherName,
+        date: formattedDate,
+      },
+    });
+
+    if (existingAttendance) {
+      return res.status(400).json({ message: 'Attendance has already been marked for today' });
+    }
+
+    // If not, mark attendance
     const attendance = await Attendance.create({
-      teacherId,
-      date: new Date(),
+      teacherName,
+      date: formattedDate,
       status,
     });
 
@@ -23,14 +39,15 @@ export const markAttendance = async (req, res) => {
   }
 };
 
+
 // Get attendance of a specific teacher
 export const getAttendanceByTeacher = async (req, res) => {
-  const { teacherId, } = req.params;
+  const { teacherName, } = req.params;
 
   try {
     const attendance = await Attendance.findAll({
-      where: { teacherId },
-      include: [{ model: Teacher, attributes: ['name', 'email', 'subject'] }],
+      where: { teacherName },
+      include: [{ model: Teacher, attributes: ['name', 'email', 'subject','classteacher'] }],
     });
 
     if (!attendance.length) {
@@ -47,7 +64,7 @@ export const getAttendanceByTeacher = async (req, res) => {
 export const getAllAttendance = async (req, res) => {
   try {
     const attendance = await Attendance.findAll({
-      include: [{ model: Teacher, attributes: ['name', 'email', 'subject'] }],
+      include: [{ model: Teacher, attributes: ['name', 'email', 'subject','classteacher'] }],
     });
 
     res.status(200).json(attendance);

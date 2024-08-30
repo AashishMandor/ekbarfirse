@@ -10,6 +10,8 @@ import noticeRoutes from './routes/NoticeRoutes.js';
 import studentRoutes from './routes/studentRoutes.js';
 import subjectRoutes from './routes/subjectRoutes.js';
 import teacherRoutes from './routes/teacherRoutes.js';
+
+import studentAttendanceRoutes from './routes/SattendanceRoutes.js';
 // Load environment variables
 dotenv.config();
 
@@ -28,6 +30,7 @@ app.use('/api/class', classRoutes);
 app.use('/api/subject', subjectRoutes);
 app.use('/api/notice', noticeRoutes);
 app.use('/api/complain',complainRoutes);
+app.use('/api/studentAttendance', studentAttendanceRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

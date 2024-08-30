@@ -1,12 +1,16 @@
-
+import { formatDate } from "../extra/dateFormat.js";
 import Notice from "../models/Notice.js";
+
+
 
 export const createnotice = async (req, res) => {
     try {
-      const { title, description} = req.body;
+      const { title, description, date} = req.body;
+      const formattedDate = formatDate(new Date());
       const notice = await Notice.create({
         title,
         description,
+        date: formattedDate
       });
   
       res.status(201).json({ message: 'notice created successfully', notice });
@@ -17,23 +21,6 @@ export const createnotice = async (req, res) => {
   };
   
 
-//   export const deleteTeacher = async (req, res) => {
-//     const { id } = req.params;
-  
-//     try {
-//       // Find teacher by ID
-//       const teacher = await Teacher.findByPk(id);
-//       if (!teacher) {
-//         return res.status(404).json({ message: 'Teacher not found' });
-//       }
-  
-//       // Delete the teacher
-//       await teacher.destroy();
-//       res.status(200).json({ message: 'Teacher deleted successfully' });
-//     } catch (error) {
-//       res.status(500).json({ message: 'Something went wrong', error });
-//     }
-//   };
 
 
 export const getAllNotice = async (req, res) => {
