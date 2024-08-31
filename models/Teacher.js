@@ -31,10 +31,13 @@ const Teacher = sequelize.define("Teacher", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  classteacher: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    defaultValue: 'class not assigned',
+  classId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'Classes',
+      key: 'id',
+    },
   },
 });
 

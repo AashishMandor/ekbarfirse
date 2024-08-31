@@ -1,25 +1,27 @@
-// import express from 'express';
-// import { createclass, getAllClass, getClassById } from "../controllers/ClassController.js";
-
-// const router =express.Router()
-
-// router.post('/', createclass);
-// router.get('/',getAllClass);
-// router.get('/:id',getClassById);
-
-// export default router
-
-
-
-
-
 import express from 'express';
-import { createclass, getClassDetails, getClassStudents, getClassSubjects } from '../controllers/classController.js';
+import {
+    createClass,
+    deleteClass,
+    getClassById,
+    getClassDetails,
+    updateClass,
+} from '../controllers/classController.js';
 
 const router = express.Router();
-router.post('/', createclass);
-router.get('/classes/:classID/details', getClassDetails);
-router.get('/classes/:classID/subjects', getClassSubjects);
-router.get('/classes/:classID/students', getClassStudents);
+
+// Get all classes
+router.get('/', getClassDetails);
+
+// Get a class by ID
+router.get('/:classID', getClassById);
+
+// Create a new class
+router.post('/', createClass);
+
+// Update a class
+router.put('/:classID', updateClass);
+
+// Delete a class
+router.delete('/:classID', deleteClass);
 
 export default router;

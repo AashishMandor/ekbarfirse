@@ -1,43 +1,27 @@
 import express from 'express';
 import {
-    createstudents,
-    deletestudent,
-    getAllstudents,
-    getAllStudentsWithAttendance,
-    getstudentById,
-    studentlogin,
-    updatestudent, // Ensure correct path and file extension
+    createStudent,
+    deleteStudent,
+    getAllStudents,
+    getStudentById,
+    updateStudent,
 } from '../controllers/studentController.js';
-
-import { markAttendance } from '../controllers/SattendanceController.js';
-
 
 const router = express.Router();
 
-router.post('/', createstudents)
-//http://localhost:5000/api/student/
+// Get all students
+router.get('/', getAllStudents);
 
-// Route to update an existing student
-router.put('/:id', updatestudent);
-//http://localhost:5000/api/student/1
+// Get a student by ID
+router.get('/:studentID', getStudentById);
 
-// Route to get student details by ID
-router.get('/detail/:rollNumber', getstudentById);
-//http://localhost:5000/api/student/2
+// Create a new student
+router.post('/', createStudent);
 
-// Route to get all students
-router.get('/', getAllstudents);
-// http://localhost:5000/api/student/
+// Update a student
+router.put('/:studentID', updateStudent);
 
-
-// Route to delete a student
-router.delete('/:rollNumber', deletestudent);
-
-// route to login student
-router.post('/login',studentlogin);
-
-router.get('/allstudents', getAllStudentsWithAttendance);
-router.post('/attendance', markAttendance);
-
+// Delete a student
+router.delete('/:studentID', deleteStudent);
 
 export default router;

@@ -6,46 +6,41 @@ const Student = sequelize.define('Student', {
   rollNumber: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
   },
   StudentName: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   email: {
     type: DataTypes.STRING,
     unique: true,
-    allowNull: false
+    allowNull: false,
   },
   password: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   age: {
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: false,
   },
   address: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
-  className: { // Changed from 'class' to 'className' to avoid reserved keyword issues
-    type: DataTypes.STRING,
+  classId: {
+    type: DataTypes.INTEGER,
     references: {
       model: 'Classes',
-      key: 'name'
-    }
-  }
-}, {
-  timestamps: true,  // Automatically adds createdAt and updatedAt fields
+      key: 'id',
+    },
+  },
 });
 
-// Associations
-Student.belongsTo(Class, { foreignKey: 'class', targetKey: 'name' });
-Class.hasMany(Student, { foreignKey: 'class', sourceKey: 'name' });
+Student.belongsTo(Class, { foreignKey: 'classId' });
+Class.hasMany(Student, { foreignKey: 'classId' });
 
-// Student.hasMany(Sattendance, { foreignKey: 'studentRollNumber', sourceKey: 'rollNumber' });
-// Sattendance.belongsTo(Student, { foreignKey: 'studentRollNumber', targetKey: 'rollNumber' });
 
 sequelize.sync({ alter: true })
   .then(() => {

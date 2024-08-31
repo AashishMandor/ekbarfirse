@@ -47,21 +47,25 @@ import {
     createTeacher,
     deleteTeacher,
     getAllTeachers,
-    getTeacher,
-    getTeachersByClass,
+    getTeacherById,
     updateTeacher,
 } from '../controllers/teacherController.js';
 
 const router = express.Router();
 
-router.post('/teachers', createTeacher);
-router.get('/teachers/:id', getTeacher);
-router.get('/teachers', getAllTeachers);
-router.put('/teachers/:id', updateTeacher);
-router.delete('/teachers/:id', deleteTeacher);
+// Get all teachers
+router.get('/', getAllTeachers);
 
-// Additional route to get teachers by class
-router.get('/classes/:classID/teachers', getTeachersByClass);
+// Get a teacher by ID
+router.get('/:teacherID', getTeacherById);
+
+// Create a new teacher
+router.post('/', createTeacher);
+
+// Update a teacher
+router.put('/:teacherID', updateTeacher);
+
+// Delete a teacher
+router.delete('/:teacherID', deleteTeacher);
 
 export default router;
-

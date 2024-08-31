@@ -192,65 +192,50 @@
 
 import Teacher from '../models/Teacher.js';
 
-export const createTeacher = async (req, res) => {
-  try {
-    const newTeacher = await Teacher.create(req.body);
-    res.status(201).json(newTeacher);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-export const getTeacher = async (req, res) => {
-  try {
-    const teacher = await Teacher.findByPk(req.params.id);
-    if (teacher) {
-      res.status(200).json(teacher);
-    } else {
-      res.status(404).json({ message: 'Teacher not found' });
-    }
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
 export const getAllTeachers = async (req, res) => {
   try {
     const teachers = await Teacher.findAll();
-    res.status(200).json(teachers);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.json(teachers);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching teachers' });
+  }
+};
+
+export const getTeacherById = async (req, res) => {
+  try {
+    const teacher = await Teacher.findByPk(req.params.teacherID);
+    res.json(teacher);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching teacher details' });
+  }
+};
+
+export const createTeacher = async (req, res) => {
+  try {
+    const newTeacher = await Teacher.create(req.body);
+    res.json(newTeacher);
+  } catch (error) {
+    res.status(500).json({ error: 'Error creating teacher' });
+    console.log(error);
   }
 };
 
 export const updateTeacher = async (req, res) => {
   try {
     const updatedTeacher = await Teacher.update(req.body, {
-      where: { id: req.params.id },
+      where: { id: req.params.teacherID },
     });
-    res.status(200).json(updatedTeacher);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.json(updatedTeacher);
+  } catch (error) {
+    res.status(500).json({ error: 'Error updating teacher' });
   }
 };
 
 export const deleteTeacher = async (req, res) => {
   try {
-    await Teacher.destroy({ where: { id: req.params.id } });
-    res.status(200).json({ message: 'Teacher deleted successfully' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-// Additional controller to get teachers by class
-export const getTeachersByClass = async (req, res) => {
-  try {
-    const teachers = await Teacher.findAll({
-      where: { classId: req.params.classID },
-    });
-    res.status(200).json(teachers);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    await Teacher.destroy({ where: { id: req.params.teacherID } });
+    res.json({ message: 'Teacher deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error deleting teacher' });
   }
 };

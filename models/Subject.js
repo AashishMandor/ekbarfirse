@@ -24,6 +24,13 @@ const Subject = sequelize.define("Subject", {
     type: DataTypes.DATEONLY,
     allowNull: false,
   },
+  classId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'Classes',
+      key: 'id',
+    },
+  },
 });
 
 Class.hasMany(Subject, { foreignKey: "classId" });

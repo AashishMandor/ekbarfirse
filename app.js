@@ -25,12 +25,17 @@ app.use('/api/teachers', teacherRoutes);// post == localhost:5000/api/teachers/=
 app.use('/api/attendance', attendanceRoutes);
 //localhost:5000/api/attendance/mark
 //localhost:5000/api/attendance/teacher/1
-app.use('/api/student', studentRoutes);
-app.use('/api/class', classRoutes);
-app.use('/api/subject', subjectRoutes);
+// app.use('/api/student', studentRoutes);
+// app.use('/api/class', classRoutes);
+// app.use('/api/subject', subjectRoutes);
 app.use('/api/notice', noticeRoutes);
 app.use('/api/complain',complainRoutes);
 app.use('/api/studentAttendance', studentAttendanceRoutes);
+
+
+app.use('/api/classes', classRoutes);
+app.use('/api/students', studentRoutes);
+app.use('/api/subjects', subjectRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

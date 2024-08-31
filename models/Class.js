@@ -15,7 +15,10 @@ const Class = sequelize.define("Class", {
     type: DataTypes.STRING,
     allowNull: true,
   },
-}, );
+});
+
+
+
 
 // Sync model with database
 sequelize.sync({ alter: true })

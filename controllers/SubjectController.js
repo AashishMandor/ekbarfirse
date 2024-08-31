@@ -71,65 +71,49 @@
 
 import Subject from '../models/Subject.js';
 
-export const createSubject = async (req, res) => {
-  try {
-    const newSubject = await Subject.create(req.body);
-    res.status(201).json(newSubject);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-export const getSubject = async (req, res) => {
-  try {
-    const subject = await Subject.findByPk(req.params.id);
-    if (subject) {
-      res.status(200).json(subject);
-    } else {
-      res.status(404).json({ message: 'Subject not found' });
-    }
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
 export const getAllSubjects = async (req, res) => {
   try {
     const subjects = await Subject.findAll();
-    res.status(200).json(subjects);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.json(subjects);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching subjects' });
+  }
+};
+
+export const getSubjectById = async (req, res) => {
+  try {
+    const subject = await Subject.findByPk(req.params.subjectID);
+    res.json(subject);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching subject details' });
+  }
+};
+
+export const createSubject = async (req, res) => {
+  try {
+    const newSubject = await Subject.create(req.body);
+    res.json(newSubject);
+  } catch (error) {
+    res.status(500).json({ error: 'Error creating subject' });
   }
 };
 
 export const updateSubject = async (req, res) => {
   try {
     const updatedSubject = await Subject.update(req.body, {
-      where: { id: req.params.id },
+      where: { id: req.params.subjectID },
     });
-    res.status(200).json(updatedSubject);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.json(updatedSubject);
+  } catch (error) {
+    res.status(500).json({ error: 'Error updating subject' });
   }
 };
 
 export const deleteSubject = async (req, res) => {
   try {
-    await Subject.destroy({ where: { id: req.params.id } });
-    res.status(200).json({ message: 'Subject deleted successfully' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-// Additional controller to get subjects by class
-export const getSubjectsByClass = async (req, res) => {
-  try {
-    const subjects = await Subject.findAll({
-      where: { classId: req.params.classID },
-    });
-    res.status(200).json(subjects);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    await Subject.destroy({ where: { id: req.params.subjectID } });
+    res.json({ message: 'Subject deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error deleting subject' });
   }
 };

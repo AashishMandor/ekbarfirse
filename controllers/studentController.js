@@ -1,168 +1,48 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import Sattendance from "../models/Sattendance.js";
-import Student from "../models/Student.js";
+import Student from '../models/Student.js';
 
-
-export const createstudents = async (req, res) => {
-  const { StudentName, email, password, age, address, rollNumber, class: className } = req.body;
-
+export const getAllStudents = async (req, res) => {
   try {
-      // Check if student already exists
-      const existingStudent = await Student.findOne({ where: { email } });
-      if (existingStudent) {
-          return res.status(400).json({ message: 'Student already exists' });
-      }
-
-      // Hash the password
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      // Create a new student
-      const student = await Student.create({
-          StudentName,
-          rollNumber,
-          email,
-          age,
-          address,
-          password: hashedPassword,
-          class: className,  // Using className to avoid conflict with reserved keyword
-      });
-
-      res.status(201).json({ message: 'Student created successfully', student });
+    const students = await Student.findAll();
+    res.json(students);
   } catch (error) {
-      res.status(500).json({ message: 'Something went wrong', error });
-      console.log(error);
+    res.status(500).json({ error: 'Error fetching students' });
   }
 };
 
-
-// Update an existing student
-export const updatestudent = async (req, res) => {
-    const { rollNumber } = req.params;
-    const { name, email, password, class:className} = req.body;
-  
-    try {
-      // Find student by ID
-      const student = await Student.findByPk(rollNumber);
-      if (!student) {
-        return res.status(404).json({ message: 'student not found' });
-      }
-  
-      // Hash the new password if provided
-      let hashedPassword = Student.password;
-      if (password) {
-        hashedPassword = await bcrypt.hash(password, 10);
-      }
-  
-      // Update student details
-      await student.update({
-        name: name || Student.name,
-        email: email || Student.email,
-        password: hashedPassword,
-        class: className || Student.class
-      });
-  
-      res.status(200).json({ message: 'student updated successfully', student });
-    } catch (error) {
-      res.status(500).json({ message: 'Something went wrong', error });
-    }
-  };
-  
-  // Get details of a single student
-  export const getstudentById = async (req, res) => {
-    const { rollNumber } = req.params;
-  
-    try {
-      const student = await Student.findByPk(rollNumber);
-      if (!student) {
-        return res.status(404).json({ message: 'student not found' });
-      }
-  
-      res.status(200).json(student);
-    } catch (error) {
-      res.status(500).json({ message: 'Something went wrong', error });
-      console.log(error);
-    }
-  };
-  
-  // Get all students
-  export const getAllstudents = async (req, res) => {
-    try {
-      const students = await Student.findAll();
-      res.status(200).json(students);
-    } catch (error) {
-      res.status(500).json({ message: 'Something went wrong', error });
-    }
-  };
-  
-  // Delete a student
-  export const deletestudent = async (req, res) => {
-    const { rollNumber } = req.params;
-  
-    try {
-      // Find student by ID
-      const student = await Student.findByPk(rollNumber);
-      if (!student) {
-        return res.status(404).json({ message: 'student not found' });
-      }
-  
-      // Delete the student
-      await student.destroy();
-      res.status(200).json({ message: 'student deleted successfully' });
-    } catch (error) {
-      res.status(500).json({ message: 'Something went wrong', error });
-    }
-  };
-  
-  
-  export const studentlogin = async (req, res) => {
-    try {
-      const { rollNumber, password } = req.body;
-  
-      // Find the student by email
-      const student = await Student.findOne({ where: { rollNumber
-
-       } });
-      
-      if (!student) {
-        return res.status(400).json({ message: 'Student not found' });
-      }
-  
-      // Compare passwords
-      const isMatch = await bcrypt.compare(password, student.password); // Use 'student.password'
-      if (!isMatch) {
-        return res.status(400).json({ message: 'Invalid credentials' });
-      }
-  
-      // Generate a token (assuming you want to use JWT for authentication)
-      const token = jwt.sign(
-        { name: student.name, email: student.email },
-        'your_secret_key', // Replace with your actual secret key
-        { expiresIn: '1h' } // Token expiration time
-      );
-  
-      res.status(200).json({ message: 'Logged in successfully', token });
-    } catch (error) {
-      res.status(500).json({ message: 'Something went wrong', error });
-      console.log(error);
-    }
-  };
-
-
-export const getAllStudentsWithAttendance = async (req, res) => {
-    try {
-        const students = await Student.findAll({
-            include: [
-                {
-                    model: Sattendance,
-                    attributes: ['date', 'status']
-                }
-            ]
-        });
-        res.status(200).json(students);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch students' });
-        console.log(error );
-    }
+export const getStudentById = async (req, res) => {
+  try {
+    const student = await Student.findByPk(req.params.studentID);
+    res.json(student);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching student details' });
+  }
 };
-  
+
+export const createStudent = async (req, res) => {
+  try {
+    const newStudent = await Student.create(req.body);
+    res.json(newStudent);
+  } catch (error) {
+    res.status(500).json({ error: 'Error creating student' });
+  }
+};
+
+export const updateStudent = async (req, res) => {
+  try {
+    const updatedStudent = await Student.update(req.body, {
+      where: { rollNumber: req.params.studentID },
+    });
+    res.json(updatedStudent);
+  } catch (error) {
+    res.status(500).json({ error: 'Error updating student' });
+  }
+};
+
+export const deleteStudent = async (req, res) => {
+  try {
+    await Student.destroy({ where: { rollNumber: req.params.studentID } });
+    res.json({ message: 'Student deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error deleting student' });
+  }
+};
