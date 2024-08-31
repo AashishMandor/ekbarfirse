@@ -48,7 +48,8 @@ import {
     deleteTeacher,
     getAllTeachers,
     getTeacherById,
-    updateTeacher,
+    Teacherlogin,
+    updateTeacher
 } from '../controllers/teacherController.js';
 
 const router = express.Router();
@@ -67,5 +68,8 @@ router.put('/:teacherID', updateTeacher);
 
 // Delete a teacher
 router.delete('/:teacherID', deleteTeacher);
+
+// login a teacher
+router.post('/login', Teacherlogin);
 
 export default router;

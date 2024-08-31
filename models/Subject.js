@@ -20,10 +20,10 @@ const Subject = sequelize.define("Subject", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  date: {
-    type: DataTypes.DATEONLY,
-    allowNull: false,
-  },
+  // date: {
+  //   type: DataTypes.DATEONLY,
+  //   allowNull: false,
+  // },
   classId: {
     type: DataTypes.INTEGER,
     references: {

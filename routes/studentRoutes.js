@@ -4,7 +4,8 @@ import {
     deleteStudent,
     getAllStudents,
     getStudentById,
-    updateStudent,
+    Studentlogin,
+    updateStudent
 } from '../controllers/studentController.js';
 
 const router = express.Router();
@@ -13,7 +14,7 @@ const router = express.Router();
 router.get('/', getAllStudents);
 
 // Get a student by ID
-router.get('/:studentID', getStudentById);
+router.get('/:rollNumber', getStudentById);
 
 // Create a new student
 router.post('/', createStudent);
@@ -23,5 +24,9 @@ router.put('/:studentID', updateStudent);
 
 // Delete a student
 router.delete('/:studentID', deleteStudent);
+
+
+//login a student
+router.post('/login', Studentlogin)
 
 export default router;

@@ -1,5 +1,5 @@
-// import bcrypt from 'bcrypt';
-// import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 // import Teacher from '../models/Teacher.js';
 
 // // Create a new teacher
@@ -211,13 +211,38 @@ export const getTeacherById = async (req, res) => {
 };
 
 export const createTeacher = async (req, res) => {
-  try {
-    const newTeacher = await Teacher.create(req.body);
-    res.json(newTeacher);
-  } catch (error) {
-    res.status(500).json({ error: 'Error creating teacher' });
+  // try {
+  //   const newTeacher = await Teacher.create(req.body);
+  //   res.json(newTeacher);
+  // } catch (error) {
+  //   res.status(500).json({ error: 'Error creating teacher' });
+  //   console.log(error);
+  // }
+  const { name, email, password, subject, } = req.body;
+
+    try {
+      // Check if teacher already exists
+      const existingTeacher = await Teacher.findOne({ where: { email } });
+      if (existingTeacher) {
+        return res.status(400).json({ message: 'Teacher already exists' });
+      }
+  
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      // Create a new teacher
+      const teacher = await Teacher.create({
+        name,
+        email,
+        password: hashedPassword,
+        subject
+      });
+  
+      res.status(201).json({ message: 'Teacher created successfully', teacher });
+    } catch (error) {
+      res.status(500).json({ message: 'Something went wrong', error });
     console.log(error);
-  }
+    }
 };
 
 export const updateTeacher = async (req, res) => {
@@ -237,5 +262,40 @@ export const deleteTeacher = async (req, res) => {
     res.json({ message: 'Teacher deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Error deleting teacher' });
+  }
+};
+
+
+
+
+export const Teacherlogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Find the teacher
+    const teacher = await Teacher.findOne({ where: { email } });
+
+    if (!teacher) {
+      console.log('Teacher not found');
+      return res.status(400).json({ message: 'Teacher not found' });
+    }
+
+    // Compare passwords
+    const isMatch = await bcrypt.compare(password, teacher.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    // Generate a JWT token
+    const token = jwt.sign(
+      { name: teacher.name, teacher: teacher.email },
+      'your_jwt_secret_key',
+      { expiresIn: '1h' }
+    );
+
+    return res.status(200).json({ message: 'Logged in successfully', token });
+  } catch (error) {
+    console.log('Something went wrong:', error);
+    return res.status(500).json({ message: 'Something went wrong', error });
   }
 };

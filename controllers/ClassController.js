@@ -19,13 +19,38 @@ export const getClassById = async (req, res) => {
 };
 
 export const createClass = async (req, res) => {
-  try {
-    const newClass = await Class.create(req.body);
-    res.json(newClass);
-  } catch (error) {
-    res.status(500).json({ error: 'Error creating class' });
-  }
+//   try {
+//     const newClass = await Class.create(req.body);
+//     res.json(newClass);
+//   } catch (error) {
+//     res.status(500).json({ error: 'Error creating class' });
+//   }
+// };
+const { name } = req.body;
+
+    try {
+      // Check if class already exists
+      const existingClass = await Class.findOne({ where: { name } });
+      if (existingClass) {
+        return res.status(400).json({ message: 'Class already exists' });
+      }
+  
+   
+  
+      // Create a new class
+      const classs = await Class.create({
+        name,
+        
+      });
+  
+      res.status(201).json({ message: 'Class created successfully', classs });
+    } catch (error) {
+      res.status(500).json({ message: 'Something went wrong', error });
+    console.log(error);
+    }
 };
+
+
 
 export const updateClass = async (req, res) => {
   try {
