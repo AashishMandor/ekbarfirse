@@ -24,7 +24,7 @@ import sequelize from "../config/database.js";
   timestamps: true,   // Disable Sequelize's automatic timestamp fields (createdAt, updatedAt) if not needed
 });
 
-sequelize.sync({ alter: true })
+sequelize.sync()
   .then(() => {
     console.log("Notice model created successfully");
   })

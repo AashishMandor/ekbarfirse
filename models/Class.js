@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import sequelize from "../config/database.js";
 
 const Class = sequelize.define("Class", {
-  id: {
+  classId: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
@@ -21,8 +21,13 @@ const Class = sequelize.define("Class", {
 
 
 
+
+
+
+
+
 // Sync model with database
-sequelize.sync({ alter: true })
+sequelize.sync()
   .then(() => {
     console.log("Class model created or updated.");
   })

@@ -1,3 +1,4 @@
+import { formatDate } from '../extra/dateFormat.js';
 import Class from '../models/Class.js';
 
 export const getClassDetails = async (req, res) => {
@@ -26,11 +27,12 @@ export const createClass = async (req, res) => {
 //     res.status(500).json({ error: 'Error creating class' });
 //   }
 // };
-const { name } = req.body;
+const { name ,date} = req.body;
 
     try {
       // Check if class already exists
       const existingClass = await Class.findOne({ where: { name } });
+      const formattedDate = formatDate(new Date());
       if (existingClass) {
         return res.status(400).json({ message: 'Class already exists' });
       }
@@ -40,6 +42,7 @@ const { name } = req.body;
       // Create a new class
       const classs = await Class.create({
         name,
+        date: formattedDate
         
       });
   
@@ -49,6 +52,7 @@ const { name } = req.body;
     console.log(error);
     }
 };
+
 
 
 

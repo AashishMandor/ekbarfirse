@@ -218,7 +218,7 @@ export const createTeacher = async (req, res) => {
   //   res.status(500).json({ error: 'Error creating teacher' });
   //   console.log(error);
   // }
-  const { name, email, password, subject, } = req.body;
+  const { name, email, password ,subject} = req.body;
 
     try {
       // Check if teacher already exists

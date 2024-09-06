@@ -1,3 +1,4 @@
+
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -7,11 +8,10 @@ import attendanceRoutes from './routes/attendanceRoutes.js';
 import classRoutes from './routes/ClassRoutes.js';
 import complainRoutes from './routes/complainRoutes.js';
 import noticeRoutes from './routes/NoticeRoutes.js';
+import studentAttendanceRoutes from './routes/SattendanceRoutes.js';
 import studentRoutes from './routes/studentRoutes.js';
 import subjectRoutes from './routes/subjectRoutes.js';
 import teacherRoutes from './routes/teacherRoutes.js';
-
-import studentAttendanceRoutes from './routes/SattendanceRoutes.js';
 // Load environment variables
 dotenv.config();
 
@@ -23,19 +23,19 @@ app.use('/api/admin', adminRoutes);   //post  == localhost:5000/api/admin/signup
 app.use('/api/teachers', teacherRoutes);// post == localhost:5000/api/teachers/======create teacher
 //
 app.use('/api/attendance', attendanceRoutes);
-//localhost:5000/api/attendance/mark
+// localhost:5000/api/attendance/mark
 //localhost:5000/api/attendance/teacher/1
-// app.use('/api/student', studentRoutes);
-// app.use('/api/class', classRoutes);
-// app.use('/api/subject', subjectRoutes);
+app.use('/api/student', studentRoutes);
+app.use('/api/class', classRoutes);
+app.use(`/api/classes`, subjectRoutes);
 app.use('/api/notice', noticeRoutes);
 app.use('/api/complain',complainRoutes);
 app.use('/api/studentAttendance', studentAttendanceRoutes);
 
 
 app.use('/api/classes', classRoutes);
-app.use('/api/students', studentRoutes);
-app.use('/api/subjects', subjectRoutes);
+app.use('/api/classes', studentRoutes);
+app.use('/api/classes', subjectRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

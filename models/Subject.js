@@ -27,8 +27,8 @@ const Subject = sequelize.define("Subject", {
   classId: {
     type: DataTypes.INTEGER,
     references: {
-      model: 'Classes',
-      key: 'id',
+      model: Class,
+      key: 'classId',
     },
   },
 });
@@ -39,7 +39,7 @@ Subject.belongsTo(Class, { foreignKey: "classId" });
 
 
     
-sequelize.sync({alter:true})
+sequelize.sync()
 .then(()=>{
     console.log("subject model created successfully");
 })
@@ -48,5 +48,5 @@ sequelize.sync({alter:true})
     console.log(err);
 })
 
-
+export { Class, Subject };
 export default Subject;

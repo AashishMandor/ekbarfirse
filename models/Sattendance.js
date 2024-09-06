@@ -24,7 +24,7 @@ const Sattendance = sequelize.define('Sattendance', {
 });
 
 
-sequelize.sync({ alter: true })
+sequelize.sync()
   .then(() => {
     console.log('Sattendance table created or updated.');
   })

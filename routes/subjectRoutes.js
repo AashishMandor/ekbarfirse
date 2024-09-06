@@ -16,7 +16,9 @@ router.get('/', getAllSubjects);
 router.get('/:subjectID', getSubjectById);
 
 // Create a new subject
-router.post('/', createSubject);
+router.post('/:classId/subject/', createSubject);
+//localhost:5000/api/classes/2/subject/
+
 
 // Update a subject
 router.put('/:subjectID', updateSubject);

@@ -25,7 +25,7 @@ const Attendance = sequelize.define('Attendance', {
 
 
 
-sequelize.sync({ alter: true })  // Sync the model with the database
+sequelize.sync()  // Sync the model with the database
   .then(() => {
     console.log('Attendance table has been created or updated.');
   })

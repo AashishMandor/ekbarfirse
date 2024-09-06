@@ -23,7 +23,7 @@ allowNull: false,
 
 })
 
-sequelize.sync({ alter: true })
+sequelize.sync()
   .then(() => {
     console.log('complain table created or updated.');
   })

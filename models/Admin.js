@@ -36,7 +36,7 @@ const Admin = sequelize.define('Admin', {
 });
 
 // Synchronize the model with the database
-sequelize.sync({ alter: true })  // Use `alter` to modify existing tables, or `force: true` to recreate tables
+sequelize.sync()  // Use `alter` to modify existing tables, or `force: true` to recreate tables
   .then(() => {
     console.log('Database tables have been created or updated.');
   })

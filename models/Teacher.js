@@ -29,14 +29,15 @@ const Teacher = sequelize.define("Teacher", {
   },
   subject: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: "henglish",
   },
   classId: {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: 'Classes',
-      key: 'id',
+      model: Class,
+      key: 'classId',
     },
   },
 });
@@ -47,7 +48,8 @@ Teacher.belongsTo(Class, { foreignKey: "classId" });
 
 
 
-sequelize.sync({ alter: true })
+
+sequelize.sync()
   .then(() => {
     console.log('Teacher model created or updated.');
   })

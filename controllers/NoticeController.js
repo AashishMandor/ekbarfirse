@@ -5,7 +5,7 @@ import Notice from "../models/Notice.js";
 
 export const createnotice = async (req, res) => {
     try {
-      const { title, description, date} = req.body;
+      const { title, description} = req.body;
       const formattedDate = formatDate(new Date());
       const notice = await Notice.create({
         title,

@@ -32,8 +32,8 @@ const Student = sequelize.define('Student', {
   classId: {
     type: DataTypes.INTEGER,
     references: {
-      model: 'Classes',
-      key: 'id',
+      model: Class,
+      key: 'classId',
     },
   },
 });
@@ -42,7 +42,11 @@ Student.belongsTo(Class, { foreignKey: 'classId' });
 Class.hasMany(Student, { foreignKey: 'classId' });
 
 
-sequelize.sync({ alter: true })
+
+
+
+
+sequelize.sync()
   .then(() => {
     console.log('Student table created or updated.');
   })

@@ -1,7 +1,7 @@
   import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import Class from '../models/Class.js';
 import Student from '../models/Student.js';
-
 
 
   export const getAllStudents = async (req, res) => {
@@ -23,44 +23,46 @@ import Student from '../models/Student.js';
   };
 
   export const createStudent = async (req, res) => {
-  //   try {
-  //     const newStudent = await Student.create(req.body);
-  //     res.json(newStudent);
-  //   } catch (error) {
-  //     res.status(500).json({ error: 'Error creating student' });
-  //     console.log(error);
-  //   }
-  // };
-  const { rollNumber,StudentName, email, password, age,address, } = req.body;
-
-  try {
-    // Check if teacher already exists
-    const existingstudent = await Student.findOne({ where: { rollNumber } });
-    if (existingstudent) {
-      return res.status(400).json({ message: 'student already exists' });
-    }
-
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create a new teacher
-    const student = await Student.create({
-      rollNumber,
-      StudentName,
-      email,
-      password: hashedPassword,
-      age,
-      address
+    const { rollNumber, StudentName, email, password, age, address } = req.body;
+    const { classId } = req.params;
+  
     
-    });
-
-    res.status(201).json({ message: 'student created successfully', student });
-  } catch (error) {
-    res.status(500).json({ message: 'Something went wrong', error });
-  console.log(error);
-  }
+    // Debug: Check if classId is coming correctly
+  
+    try {
+      // Check if the class exists
+      const classExists = await Class.findByPk(classId);
+      console.log('Class Exists:', classExists);  // Debug: Check if Class.findByPk works
+  
+      if (!classExists) {
+        return res.status(404).json({ message: 'Class not found' });
+      }
+  
+      // Continue with creating the student
+      const existingStudent = await Student.findOne({ where: { email } });
+      if (existingStudent) {
+        return res.status(400).json({ message: 'Student already exists' });
+      }
+  
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      const student = await Student.create({
+        rollNumber,
+        StudentName,
+        email,
+        password: hashedPassword,
+        age,
+        address,
+        classId: parseInt(classId, 10), // Ensure classId is an integer
+      });
+  
+      res.status(201).json({ message: 'Student created successfully', student });
+    } catch (error) {
+      res.status(500).json({ message: 'Something went wrong', error });
+      console.log(error);
+    }
   };
-
+  
   export const updateStudent = async (req, res) => {
     try {
       const updatedStudent = await Student.update(req.body, {

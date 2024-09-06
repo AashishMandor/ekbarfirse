@@ -17,7 +17,8 @@ router.get('/', getAllStudents);
 router.get('/:rollNumber', getStudentById);
 
 // Create a new student
-router.post('/', createStudent);
+router.post('/:classId/students/', createStudent);
+//localhost:5000/api/classes/2/students/
 
 // Update a student
 router.put('/:studentID', updateStudent);

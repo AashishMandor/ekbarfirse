@@ -69,6 +69,7 @@
 //     }
 
 
+import Class from '../models/Class.js';
 import Subject from '../models/Subject.js';
 
 export const getAllSubjects = async (req, res) => {
@@ -90,13 +91,41 @@ export const getSubjectById = async (req, res) => {
 };
 
 export const createSubject = async (req, res) => {
+  const { subjectName, code, session } = req.body;
+  const { classId } = req.params; // Extract classId from URL parameters
+
+  console.log('Received classId:', classId); // Debug: Check if classId is received correctly
+
+  // Check if all fields are provided
+  if (!subjectName || !code || !session || !classId) {
+    console.log(subjectName, code, session);
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
   try {
-    const newSubject = await Subject.create(req.body);
-    res.json(newSubject);
+    // Check if the class exists
+    const classExists = await Class.findByPk(classId);
+    console.log('Class Exists:', classExists);  // Debug: Check if Class.findByPk works
+
+    if (!classExists) {
+      return res.status(404).json({ message: 'Class not found' });
+    }
+
+    // Create a new subject
+    const newSubject = await Subject.create({
+      subjectName,
+      code,
+      session,
+      classId: parseInt(classId, 10), // Ensure classId is an integer
+    });
+
+    res.status(201).json({ message: 'Subject created successfully', newSubject });
   } catch (error) {
-    res.status(500).json({ error: 'Error creating subject' });
+    console.error('Error creating subject:', error);
+    res.status(500).json({ error: 'Something went wrong' });
   }
 };
+
 
 export const updateSubject = async (req, res) => {
   try {
@@ -106,6 +135,7 @@ export const updateSubject = async (req, res) => {
     res.json(updatedSubject);
   } catch (error) {
     res.status(500).json({ error: 'Error updating subject' });
+    console.log(error);
   }
 };
 
