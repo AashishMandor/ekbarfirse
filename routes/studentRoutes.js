@@ -13,6 +13,7 @@ const router = express.Router();
 // Get all students
 router.get('/', getAllStudents);
 
+
 // Get a student by ID
 router.get('/:rollNumber', getStudentById);
 
@@ -29,5 +30,6 @@ router.delete('/:studentID', deleteStudent);
 
 //login a student
 router.post('/login', Studentlogin)
+////localhost:5000/api/classes/login
 
 export default router;

@@ -2,6 +2,8 @@ import { DataTypes } from "sequelize";
 import sequelize from "../config/database.js";
 import Class from "./Class.js";
 
+
+
 const Subject = sequelize.define("Subject", {
   id: {
     type: DataTypes.INTEGER,
@@ -36,6 +38,8 @@ const Subject = sequelize.define("Subject", {
 Class.hasMany(Subject, { foreignKey: "classId" });
 Subject.belongsTo(Class, { foreignKey: "classId" });
 
+// Subject.belongsTo(Class, { foreignKey: 'classId', as: 'Class' });
+
 
 
     
@@ -48,5 +52,5 @@ sequelize.sync()
     console.log(err);
 })
 
-export { Class, Subject };
+// export { Class, Subject };
 export default Subject;

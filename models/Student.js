@@ -2,6 +2,7 @@ import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
 import Class from './Class.js';
 
+
 const Student = sequelize.define('Student', {
   rollNumber: {
     type: DataTypes.INTEGER,
@@ -42,6 +43,9 @@ Student.belongsTo(Class, { foreignKey: 'classId' });
 Class.hasMany(Student, { foreignKey: 'classId' });
 
 
+// Student.belongsTo(Class, { foreignKey: 'classId', as: 'Class' });
+
+
 
 
 
@@ -53,5 +57,6 @@ sequelize.sync()
   .catch((error) => {
     console.error('Error creating or updating Student table:', error);
   });
+  
 
 export default Student;

@@ -21,6 +21,8 @@ const Class = sequelize.define("Class", {
 
 
 
+// Class.hasMany(Student, { foreignKey: 'classId', as: 'Students' }); // Note the alias 'Students'
+// Class.hasMany(Subject, { foreignKey: 'classId', as: 'Subjects' });
 
 
 
@@ -35,5 +37,7 @@ sequelize.sync()
     console.error("Error creating or updating Class model", err);
     console.log(err);
 });
+
+
 
 export default Class;
